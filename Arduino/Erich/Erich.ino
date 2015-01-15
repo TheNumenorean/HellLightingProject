@@ -10,21 +10,22 @@
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
-int r[NUM_LEDS];
-int g[NUM_LEDS];
-int b[NUM_LEDS];
 int num;
 int c;
 
-void setup() { 
+void setup() {
+  
+  FastLED.addLeds<APA104, DATA_PIN, GRB>(leds, 0, NUM_LEDS / 3);
+  FastLED.addLeds<APA104, 6, GRB>(leds, NUM_LEDS / 2, NUM_LEDS /2);
+  
   num = 200;
   c=0;
   for(int i = 0; i < NUM_LEDS; i++) {
-    r[i]=10;
-    g[i]=10;
-    b[i]=10; 
+    leds[i].b=10;
+    leds[i].g=10;
+    leds[i].r=10; 
   }
-  FastLED.addLeds<WS2812B, DATA_PIN, GRB>(leds, NUM_LEDS);
+  
 }
 
 void loop() { 
@@ -54,7 +55,6 @@ void loop() {
 		// now that we've shown the leds, reset the i'th led to black
 		//j=NUM_LEDS-1-i;
 
-                if(i < NUM_LEDS)
                   leds[i].r = random8();
 		  leds[i].g = random8();
 		  leds[i].b = random8();
