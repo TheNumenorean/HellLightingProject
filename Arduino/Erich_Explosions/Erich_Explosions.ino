@@ -63,12 +63,11 @@ void loop() {
 
   
   int x=random(1200);
-  int w=random(600);
-  int r=random8();
-  int g=random8();
-  int b=random8();
+  int w=random(300);
+  int r=random8()/3;
+  int g=random8()/3;
+  int b=random8()/3;
   int n;
-  int fade=10;
   
   set(x,r,g,b);
   FastLED.show();
@@ -118,7 +117,10 @@ void loop() {
 }
 
 void set(int in, int R, int G, int B){
- if(in > NUM_LEDS / 2 - 1){
+ int n;
+ 
+  
+  if(in > NUM_LEDS / 2 - 1){
       n=NUM_LEDS - (in - (NUM_LEDS / 2 - 1));
     }
     else{
@@ -131,6 +133,7 @@ void set(int in, int R, int G, int B){
 } 
 
 int fader(int c){
+  int fade=10;
   int result = c - fade;
   if(result < 0){
     return 0;
