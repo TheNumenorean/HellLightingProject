@@ -15,7 +15,7 @@ int c;
 
 void setup() {
   
-  FastLED.addLeds<APA104, DATA_PIN, GRB>(leds, 0, NUM_LEDS / 3);
+  FastLED.addLeds<APA104, DATA_PIN, GRB>(leds, 0, NUM_LEDS / 2);
   FastLED.addLeds<APA104, 6, GRB>(leds, NUM_LEDS / 2, NUM_LEDS /2);
   
   num = 200;
@@ -55,9 +55,9 @@ void loop() {
 		// now that we've shown the leds, reset the i'th led to black
 		//j=NUM_LEDS-1-i;
 
-                  leds[i].r = random8();
-		  leds[i].g = random8();
-		  leds[i].b = random8();
+                  leds[i].r = random8()/1.5;
+		  leds[i].g = random8()/1.5;
+		  leds[i].b = random8()/1.5;
                 
 		// Wait a little bit before we loop around and do it again
 		//delay(num);
