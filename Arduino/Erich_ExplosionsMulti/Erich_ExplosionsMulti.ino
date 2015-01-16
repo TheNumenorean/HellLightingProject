@@ -7,21 +7,21 @@
 // need to define DATA_PIN.  For led chipsets that are SPI based (four wires - data, clock,
 // ground, and power), like the LPD8806, define both DATA_PIN and CLOCK_PIN
 #define DATA_PIN 7
-
+#define MAX 10
 // Define the array of leds
 CRGB leds[NUM_LEDS];
 
-int explosions[max[6]];
-int max=10;
+int explosions[MAX][6];
+
 int s=1; //Inevitable in all Erich projects 
 int count=0;
-int rate=50;
+int rate=10;
   
 void setup() {
 
-  //Serial.begin(9600);
+  Serial.begin(9600);
   
-  //Serial.println("asd");
+  Serial.println("asd");
 
   FastLED.addLeds<APA104, DATA_PIN, GRB>(leds, 0, NUM_LEDS / 2);
   FastLED.addLeds<APA104, 6, GRB>(leds, NUM_LEDS / 2, NUM_LEDS / 2);
@@ -29,8 +29,8 @@ void setup() {
   int div = NUM_LEDS / 12;
   int colorMultiplier = 255 / div;
 
-  for(int i=0; i < max; i++){
-    explosions[i[5]]=-1;
+  for(int i=0; i < MAX; i++){
+    explosions[i][5]=-1;
   }
 
   
@@ -44,24 +44,29 @@ void setup() {
 void loop() {
 
   
-  if(random(rate)<1&&count<max){
-    for(int i=0; i < max; i++){
-      if(explosions[i,5]<0){
-        explosions[i[0]]=random(1200);
-        explosions[i[1]]=random(300);
-        explosions[i[2]]=random8()/3;
-        explosions[i[3]]=random8()/3;
-        explosions[i[4]]=random8()/3;
-        explosions[i[5]]=0;
+  if(random(rate)<1&&count<MAX){
+    for(int i=0; i < MAX; i++){
+      if(explosions[i][5]<0){
+        explosions[i][0]=random(1200);
+        explosions[i][1]=random(50);
+        explosions[i][2]=random8()/3;
+        explosions[i][3]=random8()/3;
+        explosions[i][4]=random8()/3;
+        explosions[i][5]=0;
         count++;
-        break();
+        Serial.println("new");
+        break;
       }
+    }
   }
-  for(int i=0; i < max; i++){
-    if(explosions[i[5]]>0){
-      explosions[i[5]]=explosionManager(explosions[i]);
-      if(explosions[i[5]]<0){
+  for(int i=0; i < MAX; i++){
+    if(explosions[i][5]>=0){
+      explosions[i][5]=explosionManager(i);
+      if(explosions[i][5]<0){
         count--;
+        for(int k=0; k < 5; i++){
+          explosions[i][k]=0;
+        }
       }
     }
   }
@@ -86,20 +91,21 @@ void set(int in, int R, int G, int B){
 } 
 
 int fader(int c){
-  int fade=1;
+  int fade=10;
   int result = c - fade;
   if(result < 0){
     return 0;
   }
   return result;
 }
-int explosionManager(int vals[7]){
-  int x=vals[0];
-  int w=vals[1];
-  int r=vals[2];
-  int g=vals[3];
-  int b=vals[4];
-  int mark=vals[5];
+int explosionManager(int j){
+  
+  int x=explosions[j][0];
+  int w=explosions[j][1];
+  int r=explosions[j][2];
+  int g=explosions[j][3];
+  int b=explosions[j][4];
+  int mark=explosions[j][5];
   
   
   if(mark<w){
@@ -117,16 +123,22 @@ int explosionManager(int vals[7]){
         set(x - i,r,g,b);
       }
       if(i%s==0){
-        return i;
+      
+        return i+1;
       }
     }
-    return w+1;
+    
+    return w+5;
   }
-
+  
   while(r>0||b>0||g>0){
-    r=fader(r);
-    b=fader(b);
-    g=fader(g);
+    //Serial.print("Before: ");
+    //Serial.println(r);
+    explosions[j][2]=fader(r);
+    explosions[j][3]=fader(g);
+    explosions[j][4]=fader(b);
+    //Serial.print("After: ");
+    //Serial.println(r);
     set(x,r,g,b);
     for(int i = 0; i < w; i++) {
       if(x + i > NUM_LEDS - 1){

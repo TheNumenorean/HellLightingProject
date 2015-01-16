@@ -68,7 +68,7 @@ void loop() {
   int g=random8()/3;
   int b=random8()/3;
   int n;
-  int s=2; //Inevitable in all Erich projects
+  int s=5; //Inevitable in all Erich projects
   
   set(x,r,g,b);
   FastLED.show();
