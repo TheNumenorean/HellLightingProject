@@ -68,6 +68,7 @@ void loop() {
   int g=random8()/3;
   int b=random8()/3;
   int n;
+  int s=2; //Inevitable in all Erich projects
   
   set(x,r,g,b);
   FastLED.show();
@@ -85,7 +86,9 @@ void loop() {
     else{
       set(x - i,r,g,b);
     }
-    FastLED.show();
+    if(i%s==0){
+      FastLED.show();
+    }
   }
   while(r>0||b>0||g>0){
     r=fader(r);
@@ -113,7 +116,7 @@ void loop() {
   
   
   FastLED.show();
-  delay(random8());
+  //delay(random8());
 }
 
 void set(int in, int R, int G, int B){
@@ -133,7 +136,7 @@ void set(int in, int R, int G, int B){
 } 
 
 int fader(int c){
-  int fade=10;
+  int fade=1;
   int result = c - fade;
   if(result < 0){
     return 0;
