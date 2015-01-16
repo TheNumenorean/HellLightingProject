@@ -6,7 +6,9 @@
 // For led chips like Neopixels, which have a data line, ground, and power, you just
 // need to define DATA_PIN.  For led chipsets that are SPI based (four wires - data, clock,
 // ground, and power), like the LPD8806, define both DATA_PIN and CLOCK_PIN
-#define DATA_PIN 7
+#define DATA_PIN_1 7
+#define DATA_PIN_2 6
+#define POT_PIN A10
 
 // Define the array of leds
 CRGB leds[NUM_LEDS];
@@ -14,11 +16,9 @@ CRGB leds[NUM_LEDS];
 void setup() {
 
   Serial.begin(9600);
-  
-  Serial.println("asd");
 
-  FastLED.addLeds<APA104, DATA_PIN, GRB>(leds, 0, NUM_LEDS / 2);
-  FastLED.addLeds<APA104, 6, GRB>(leds, NUM_LEDS / 2, NUM_LEDS / 2);
+  FastLED.addLeds<APA104, DATA_PIN_1, GRB>(leds, 0, NUM_LEDS / 2);
+  FastLED.addLeds<APA104, DATA_PIN_2, GRB>(leds, NUM_LEDS / 2, NUM_LEDS / 2);
 
   int div = NUM_LEDS / 12;
   int colorMultiplier = 255 / div;
@@ -60,11 +60,23 @@ void setup() {
   FastLED.show();
 }
 
-int count=0;
+int count=1;
 byte fo=1;
 
 void loop() {
   
+  Serial.print(analogRead(POT_PIN));
+  Serial.print("       ");
+  count = 1024 - analogRead(POT_PIN);
+  
+  if(count < 1)
+    count = 1;
+  else if(count > 600)
+    count = 600;
+  
+  Serial.println(count);
+  
+  /*
   if(count >600){
     fo=0;  
   }
@@ -77,6 +89,7 @@ void loop() {
   } else {
     count--;
   }
+  */
 
   int s = count; //Speed 
   CRGB tmp1[s], tmp2[s];
