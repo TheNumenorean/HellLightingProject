@@ -5,7 +5,6 @@
 import hypermedia.net.*;
 
 UDP udp;  // define the UDP object
-byte current = 0;
 
 String ip       = "192.168.1.177";  // the remote IP address
 int port        = 8888;    // the destination port
@@ -77,7 +76,7 @@ void sendSection1() {
     data[i * 3 + 2] = leds[i].g;
     data[i * 3 + 3] = leds[i].b;
   }
-
+  
   udp.send(data, ip, port );
 }
 

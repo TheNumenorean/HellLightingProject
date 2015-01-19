@@ -48,6 +48,7 @@ void loop() {
   int packetSize = Udp.parsePacket();
   if(packetSize)
   {
+    /*
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
     Serial.print("From ");
@@ -62,6 +63,8 @@ void loop() {
     }
     Serial.print(", port ");
     Serial.println(Udp.remotePort());
+    
+    */
 
     // read the packet into packetBufffer
     Udp.read(packetBuffer, UDP_TX_PACKET_MAX_SIZE);
